@@ -1,6 +1,8 @@
 from django.db import models
 from django import forms
 
+from ijat.lib.shorthand import parse_shorthand
+
 class Eat(models.Model):
     """ Details of a Eat """
     shorthand = models.CharField(max_length=300)
@@ -17,6 +19,14 @@ class Eat(models.Model):
         return self.shorthand
     
     def process_shorthand(self):
+        parsed = parse_shorthand(self.shorthand)
+        if parsed is None:
+            return False
+        self.cost = parsed['cost']
+        self.rating = parsed['rating']
+        self.food = parsed['food']
+        self.location = parsed['location']
+        self.comment = parsed['comment']
         return True
     
     def was_published_today(self):

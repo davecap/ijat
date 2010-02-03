@@ -3,7 +3,8 @@
 {% if latest_eats %}
     <ul>
     {% for eat in latest_eats %}
-        <li>{{ eat.shorthand }}</li>
+        <li>Food: {{ eat.food }} Location: {{ eat.location }} Rating: {{ eat.rating }} stars <br/>
+            Comment: {{ eat.comment }}</li>
     {% endfor %}
     </ul>
 {% else %}
