@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
-
 class Eat(models.Model):
     """ Details of a Eat """
     shorthand = models.CharField(max_length=300)
@@ -17,3 +14,6 @@ class Eat(models.Model):
     
     def __unicode__(self):
         return self.shorthand
+        
+    def was_published_today(self):
+        return self.pub_date.date() == datetime.date.today()
