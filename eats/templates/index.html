@@ -1,0 +1,11 @@
+<h1>Latest Eats:</h1>
+
+{% if latest_eats %}
+    <ul>
+    {% for eat in latest_eats %}
+        <li>{{ eat.shorthand }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No eats are available.</p>
+{% endif %}

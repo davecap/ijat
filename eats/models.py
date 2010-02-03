@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 
 class Eat(models.Model):
     """ Details of a Eat """
@@ -14,6 +15,12 @@ class Eat(models.Model):
     
     def __unicode__(self):
         return self.shorthand
-        
+    
+    def process_shorthand(self):
+        return True
+    
     def was_published_today(self):
         return self.pub_date.date() == datetime.date.today()
+        
+class ShorthandEatForm(forms.Form):
+    shorthand = forms.CharField(max_length=300)
