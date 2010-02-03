@@ -15,8 +15,8 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
     
-    (r'^eats/$', 'index'),
-    (r'^eats/show/(?P<eat_id>\d+)/$', 'show'),
-    (r'^eats/new/$', 'new'),
+    (r'^eats/$', 'ijat.eats.views.index'),
+    (r'^eats/show/(?P<eat_id>\d+)/$', 'ijat.eats.views.show'),
+    (r'^eats/new/$', 'ijat.eats.views.new'),
     
 )

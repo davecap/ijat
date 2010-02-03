@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -17,7 +17,7 @@ def new(request):
     if (request.POST):
         form = ShorthandEatForm(request.POST) # A form bound to the POST data
         if form.is_valid():
-            new_eat = Eat(shorthand=form.cleaned_data['subject'])
+            new_eat = Eat(shorthand=form.cleaned_data['shorthand'])
             valid = new_eat.process_shorthand()
             if valid:
                 new_eat.save()
