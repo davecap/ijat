@@ -19,4 +19,6 @@ urlpatterns = patterns('',
     (r'^eats/show/(?P<eat_id>\d+)/$', 'ijat.eats.views.show'),
     (r'^eats/new/$', 'ijat.eats.views.new'),
     
+    (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
+
 )

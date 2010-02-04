@@ -50,6 +50,10 @@ ADMIN_MEDIA_PREFIX = '/media/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '=+p__xh#wgn4c71+733z%n*lo=b^82jlfpbfh04a#a@2nx^&#l'
 
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/eats'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
