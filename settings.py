@@ -50,9 +50,16 @@ ADMIN_MEDIA_PREFIX = '/media/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '=+p__xh#wgn4c71+733z%n*lo=b^82jlfpbfh04a#a@2nx^&#l'
 
-AUTH_PROFILE_MODULE = 'accounts.UserProfile'
-LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = '/eats'
+#AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+#LOGIN_URL = '/login'
+#LOGIN_REDIRECT_URL = '/eats'
+
+FACEBOOK_API_KEY='7bd7035d13a0f29513479d7dc70a3901'
+FACEBOOK_SECRET_KEY='264fa253214abb23d3dc1829edb89b78'
+
+AUTHENTICATION_BACKENDS = (
+    'socialregistration.auth.FacebookAuth',
+)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -64,7 +71,8 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+#'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'facebook.djangofb.FacebookMiddleware',
 )
 
 ROOT_URLCONF = 'ijat.urls'
@@ -83,4 +91,14 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'ijat.eats',
     'django.contrib.admin',
+    'socialregistration',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.core.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    'django.core.context_processors.request',
+)
+

@@ -1,1 +1,9 @@
-dependencies: django, pyparsing
+Required packages:
+
+django
+pyparsing
+oauth
+oauth-python-twitter
+python-twitter
+simplejson
+

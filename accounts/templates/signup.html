@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+You can sign-up to I Just Ate That using either your Facebook or Twitter account (the easy way), or by creating a new account just with us. Remember you can always link up your Facebook or Twitter accounts later if you want to.
+
+<a href="{{ facebook_signup_url }}">Signup using your Facebook account</a>
+
+<br />
+
+<a href="{{ twitter_signup_url }}">Signup using your Twitter account</a>
+
+<br />
+
+<a href="{{ ijat_signup_url }}">Signup for an account without Facebook or Twitter</a>
+
+<br />
+
+{% endblock %}
