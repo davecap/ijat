@@ -59,6 +59,7 @@ FACEBOOK_SECRET_KEY='264fa253214abb23d3dc1829edb89b78'
 
 AUTHENTICATION_BACKENDS = (
     'socialregistration.auth.FacebookAuth',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 # List of callables that know how to import templates from various sources.
@@ -71,7 +72,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-#'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'facebook.djangofb.FacebookMiddleware',
 )
 
@@ -95,10 +96,10 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
     'django.core.context_processors.request',
 )
 

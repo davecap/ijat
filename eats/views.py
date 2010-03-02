@@ -1,19 +1,23 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.template import Context, loader
+from django.template import RequestContext, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 
 from ijat.eats.models import Eat, ShorthandEatForm
 
-def index(request):
+def index(request, template='index.html'):
     latest_eats = Eat.objects.all().order_by('-created_at')[:10]
-    return render_to_response('index.html', {'latest_eats': latest_eats})
+    return render_to_response(
+        template, {'latest_eats': latest_eats}, context_instance=RequestContext(request)
+    )
     
-def show(request, eat_id):
+def show(request, eat_id, template='show.html'):
     eat = get_object_or_404(Eat, pk=eat_id)
-    return render_to_response('show.html', {'eat': eat})
+    return render_to_response(
+        template, {'eat': eat}, context_instance=RequestContext(request)
+    )
     
-def new(request):
+def new(request, template='new.html'):
     if (request.POST):
         form = ShorthandEatForm(request.POST) # A form bound to the POST data
         if form.is_valid():
@@ -25,6 +29,6 @@ def new(request):
     else:
         form = ShorthandEatForm() # An unbound form
     
-    return render_to_response('new.html', {
-        'form': form,
-    })
+    return render_to_response(
+        template, {'form': form}, context_instance=RequestContext(request)
+    )
