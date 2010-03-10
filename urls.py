@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     (r'^eats/show/(?P<eat_id>\d+)/$', 'ijat.eats.views.show'),
     (r'^eats/new/$', 'ijat.eats.views.new'),
 
+    (r'^accounts/profile/$', 'ijat.accounts.views.profile'),
     (r'^account/', include(socialregistration.urls)),
 #   (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
 #   (r'^signup/$', 'jango.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),

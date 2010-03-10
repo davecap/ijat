@@ -5,19 +5,19 @@ from django.core.urlresolvers import reverse
 
 from ijat.eats.models import Eat, ShorthandEatForm
 
-def index(request, template='index.html'):
+def index(request, template='eats/index.html'):
     latest_eats = Eat.objects.all().order_by('-created_at')[:10]
     return render_to_response(
         template, {'latest_eats': latest_eats}, context_instance=RequestContext(request)
     )
     
-def show(request, eat_id, template='show.html'):
+def show(request, eat_id, template='eats/show.html'):
     eat = get_object_or_404(Eat, pk=eat_id)
     return render_to_response(
         template, {'eat': eat}, context_instance=RequestContext(request)
     )
     
-def new(request, template='new.html'):
+def new(request, template='eats/new.html'):
     if (request.POST):
         form = ShorthandEatForm(request.POST) # A form bound to the POST data
         if form.is_valid():
