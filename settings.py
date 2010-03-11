@@ -56,10 +56,10 @@ SECRET_KEY = '=+p__xh#wgn4c71+733z%n*lo=b^82jlfpbfh04a#a@2nx^&#l'
 
 FACEBOOK_API_KEY='7bd7035d13a0f29513479d7dc70a3901'
 FACEBOOK_SECRET_KEY='264fa253214abb23d3dc1829edb89b78'
-SOCIALREGISTRATION_GENERATE_USERNAME=True
+ACCOUNTS_GENERATE_USERNAME=True
 
 AUTHENTICATION_BACKENDS = (
-    'socialregistration.auth.FacebookAuth',
+    'accounts.auth.FacebookAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -92,8 +92,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'ijat.eats',
+    'ijat.accounts',
     'django.contrib.admin',
-    'socialregistration',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
