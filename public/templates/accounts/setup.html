@@ -1,7 +1,14 @@
-<h1>Setup</h1>
-<form action="." method="post">
-    <table>
-        {{ form }}
-    </table>
-    <input type="submit" value="save" />
-</form>
+{% extends "base.html" %}
+{% load facebook_tags %}
+{% block content %}
+  <h1>Login</h1>
+  <div>{% show_facebook_photo user %}</div>
+  <h2>{% show_facebook_greeting user %}</h2>
+  
+  <form action="." method="post">
+      <table>
+          {{ form }}
+      </table>
+      <input type="submit" value="save" />
+  </form>
+{% endblock %}

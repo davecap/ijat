@@ -23,11 +23,16 @@ from ijat.accounts.models import FacebookProfile, TwitterProfile, OpenIDProfile
 
 @login_required
 def profile(request, template='accounts/profile.html'):
-    user = request.user
-    fb_profile = request.facebook.users.getInfo([request.facebook.uid], ['name', 'pic_square'])[0]
+    user = ''
+    if request.user.is_authenticated():
+        user = request.user
+        fb_profile = FacebookProfile.objects.get(user=user)
+        friendList = fb_profile.get_friends_profiles()
+    else:
+        return HttpResponseRedirect("/eats")
     
     return render_to_response(
-        template, {'user': user, 'facebook_user': fb_profile }, context_instance=RequestContext(request)
+        template, {'user': user, 'facebook_user': fb_profile, 'USER_LOGGED_IN': request.user.is_authenticated(), 'friendList': friendList }, context_instance=RequestContext(request)
     )
 
 #
@@ -165,7 +170,6 @@ def facebook_connect(request, template='accounts/facebook.html',
         profile = FacebookProfile.objects.create(user=request.user,
             uid=request.facebook.uid)
 
-
     return HttpResponseRedirect(_get_next(request))
 
 def logout(request, redirect_url=None):
@@ -176,9 +180,12 @@ def logout(request, redirect_url=None):
     http://wiki.developers.facebook.com/index.php/Connect/Authorization_Websites#Logging_Out_Users
     """
     auth_logout(request)
-
     url = redirect_url or getattr(settings, 'LOGOUT_REDIRECT_URL', '/')
-
+    
+    if getattr(request,'facebook',False):
+          request.facebook.session_key = None
+          request.facebook.uid = None
+          
     return HttpResponseRedirect(url)
 
 def twitter(request, account_inactive_template='accounts/account_inactive.html',

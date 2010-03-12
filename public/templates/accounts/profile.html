@@ -1,3 +1,11 @@
-<h1>{{ user }}</h1>
-<h1>{{ facebook_user.uid }}</h1>
+{% extends 'base.html' %}
 
+{% load facebook_tags %}
+{% block 'content' %}
+
+<div>
+        {% show_facebook_name user %}
+        {% show_facebook_photo user %} 
+</div> 
+
+{% endblock %}

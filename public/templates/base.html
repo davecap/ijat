@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+
+{% load facebook_tags %}
+
+<head>
+    {% facebook_js %}
+    {% initialize_facebook_connect %}
+</head>
+
+<body>
+    <div id='user'> 
+        {% if USER_LOGGED_IN %} 
+        <table border='0'> 
+            <tr>
+                <td> Welcome {% show_facebook_name user %} {% show_logout %} <br /> 
+                    {% show_facebook_photo user %}
+                </td>
+            </tr>
+        </table>
+        {% else %} 
+        <table border='0'>
+            <tr>
+                <td nowrap valign='middle' align='center'>
+                    {% facebook_button %}
+                </td>
+                <td valign='middle' align='center'></td>
+            </tr>
+        </table>
+        {% endif %} 
+    </div>
+
+{% block 'content' %} Page content here. {% endblock %}
+
+</body>
+</html>

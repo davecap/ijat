@@ -1,6 +1,7 @@
+{% extends 'base.html' %}
+
 {% load facebook_tags %}
-{% facebook_button %}
-{% facebook_js %}
+{% block 'content' %}
 
 <h1>Latest Eats:</h1>
 
@@ -14,3 +15,5 @@
 {% else %}
     <p>No eats are available.</p>
 {% endif %}
+
+{% endblock %}

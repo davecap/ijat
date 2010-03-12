@@ -1,10 +1,13 @@
 from django.db import models
 from django import forms
+from django.contrib.auth.models import User
 
 from ijat.lib.shorthand import parse_shorthand
 
 class Eat(models.Model):
     """ Details of a Eat """
+    user = models.ForeignKey(User)
+    
     shorthand = models.CharField(max_length=300)
     cost = models.IntegerField(default=0)
     rating = models.IntegerField(default=0)
