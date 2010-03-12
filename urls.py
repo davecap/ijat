@@ -4,7 +4,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-import socialregistration.urls
+import ijat.accounts.urls
 
 urlpatterns = patterns('',
     # Example:
@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     (r'^eats/show/(?P<eat_id>\d+)/$', 'ijat.eats.views.show'),
     (r'^eats/new/$', 'ijat.eats.views.new'),
 
-    (r'^account/', include(ijat.accounts.urls)),
+    (r'^accounts/', include(ijat.accounts.urls)),
 #   (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
 #   (r'^signup/$', 'jango.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
 

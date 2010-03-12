@@ -24,9 +24,10 @@ from ijat.accounts.models import FacebookProfile, TwitterProfile, OpenIDProfile
 @login_required
 def profile(request, template='accounts/profile.html'):
     user = request.user
-    facebook_user = request.facebook
+    fb_profile = request.facebook.users.getInfo([request.facebook.uid], ['name', 'pic_square'])[0]
+    
     return render_to_response(
-        template, {'user': user, 'facebook_user': facebook_user }, context_instance=RequestContext(request)
+        template, {'user': user, 'facebook_user': fb_profile }, context_instance=RequestContext(request)
     )
 
 #
