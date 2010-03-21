@@ -11,8 +11,6 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site 
 
 from django.conf import settings
-from django.db.models import signals
-from django.dispatch import dispatcher
 from django.core.cache import cache
 from django.core.exceptions import ImproperlyConfigured
 
@@ -30,17 +28,9 @@ except ImportError:
 
 _thread_locals = local()
 
-# class UserProfile(models.Model):
-#     note = models.TextField()
 # 
-# def create_profile_for_user(sender, instance, signal, *args, **kwargs):
-#     try:
-#         UserProfile.objects.get(user = instance)
-#     except ( Profile.DoesNotExist, AssertionError ):
-#         profile = UserProfile(user = instance)
-#         profile.save()
+# Code borrowed from django-facebookconnect
 # 
-# dispatcher.connect(create_profile_for_user, signal=signals.post_save, sender=User)
 
 class FacebookProfile(models.Model):
     # user = models.ForeignKey(User,related_name="facebook_profile")
@@ -302,7 +292,16 @@ class OpenIDNonce(models.Model):
     timestamp = models.IntegerField()
     salt = models.CharField(max_length=255)
     date_created = models.DateTimeField(auto_now_add=True)
-    
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, related_name="user_profile")
+    facebook = models.OneToOneField(FacebookProfile, related_name="user_profile", null=True)
+    twitter = models.OneToOneField(TwitterProfile, related_name="user_profile", null=True)
+    location_name = models.CharField(max_length=100, null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
+
 # def unregister_fb_profile(sender, **kwargs):
 #     """call facebook and let them know to unregister the user"""
 #     fb = get_facebook_client()

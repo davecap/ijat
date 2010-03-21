@@ -19,7 +19,7 @@ from django.contrib.sites.models import Site
 
 from ijat.accounts.forms import UserForm
 from ijat.accounts.utils import (OAuthClient, OAuthTwitter, OpenID, _https)
-from ijat.accounts.models import FacebookProfile, TwitterProfile, OpenIDProfile
+from ijat.accounts.models import UserProfile, FacebookProfile, TwitterProfile, OpenIDProfile
 
 @login_required
 def profile(request, template='accounts/profile.html'):
@@ -67,12 +67,14 @@ def setup(request, template='accounts/setup.html',
         if not request.method == "POST":
             form = form_class(
                 request.session['accounts_user'],
-                request.session['accounts_profile'],
+                request.session['facebook_profile'],
+                request.session['twitter_profile']
             )
         else:
             form = form_class(
                 request.session['accounts_user'],
-                request.session['accounts_profile'],
+                request.session['facebook_profile'],
+                request.session['twitter_profile'],
                 request.POST
             )
             if form.is_valid():
@@ -81,8 +83,8 @@ def setup(request, template='accounts/setup.html',
                 login(request, user)
 
                 del request.session['accounts_user']
-                del request.session['accounts_profile']
-
+                del request.session['facebook_profile']
+                del request.session['twitter_profile']
                 return HttpResponseRedirect(_get_next(request))
 
         extra_context.update(dict(form=form))
@@ -97,18 +99,34 @@ def setup(request, template='accounts/setup.html',
         user = request.session['accounts_user']
         user.username = str(uuid.uuid4())[:30]
         user.save()
-
-        profile = request.session['accounts_profile']
-        profile.user = user
-        profile.save()
-
+        
+        try:
+            user_profile = user.get_profile()
+        except (UserProfile.DoesNotExist, AssertionError):
+            user_profile = UserProfile(user=user)
+        
+        if 'facebook_profile' in request.session:
+            facebook_profile = request.session['facebook_profile']
+            facebook_profile.user = user
+            facebook_profile.save()
+            user_profile.facebook = facebook_profile
+            user_profile.save()
+            
+        if 'twitter_profile' in request.session:
+            twitter_profile = request.session['twitter_profile']
+            twitter_profile.user = user
+            twitter_profile.save()
+            user_profile.twitter = twitter_profile
+            user_profile.save()
+        
         # Authenticate and login
-        user = profile.authenticate()
+        user = user_profile.facebook.authenticate()
         login(request, user)
 
         # Clear & Redirect
         del request.session['accounts_user']
-        del request.session['accounts_profile']
+        del request.session['facebook_profile']
+        del request.session['twitter_profile']
         return HttpResponseRedirect(_get_next(request))
 
 
@@ -130,7 +148,7 @@ def facebook_login(request, template='accounts/facebook.html',
     if user is None:
         request.session['accounts_user'] = User()
         fb_profile = request.facebook.users.getInfo([request.facebook.uid], ['name', 'pic_square'])[0]
-        request.session['accounts_profile'] = FacebookProfile(
+        request.session['facebook_profile'] = FacebookProfile(
             uid=request.facebook.uid,
             )
         request.session['next'] = _get_next(request)
@@ -170,6 +188,13 @@ def facebook_connect(request, template='accounts/facebook.html',
         profile = FacebookProfile.objects.create(user=request.user,
             uid=request.facebook.uid)
 
+    user_profile = request.user.get_profile()
+    if user_profile.facebook is None:
+        user_profile.facebook = profile
+        user_profile.save()
+    else:
+        print "Error: user connected to a facebook account tried to connect to another facebook account!"
+        
     return HttpResponseRedirect(_get_next(request))
 
 def logout(request, redirect_url=None):
@@ -216,7 +241,7 @@ def twitter(request, account_inactive_template='accounts/account_inactive.html',
     if user is None:
         profile = TwitterProfile(twitter_id=user_info['id'])
         user = User()
-        request.session['accounts_profile'] = profile
+        request.session['twitter_profile'] = profile
         request.session['accounts_user'] = user
         request.session['next'] = _get_next(request)
         return HttpResponseRedirect(reverse('accounts_setup'))
@@ -311,7 +336,7 @@ def openid_callback(request, template='accounts/openid.html',
         user = authenticate(identity=request.GET.get('openid.claimed_id'))
         if user is None:
             request.session['accounts_user'] = User()
-            request.session['accounts_profile'] = OpenIDProfile(
+            request.session['openid_profile'] = OpenIDProfile(
                 identity=request.GET.get('openid.claimed_id')
             )
             return HttpResponseRedirect(reverse('accounts_setup'))

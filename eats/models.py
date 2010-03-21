@@ -6,8 +6,8 @@ from ijat.lib.shorthand import parse_shorthand
 
 class Eat(models.Model):
     """ Details of a Eat """
-    user = models.ForeignKey(User)
     
+    user = models.ForeignKey(User, related_name="eats")
     shorthand = models.CharField(max_length=300)
     cost = models.IntegerField(default=0)
     rating = models.IntegerField(default=0)
