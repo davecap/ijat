@@ -26,7 +26,8 @@ def profile(request, template='accounts/profile.html'):
     user = ''
     if request.user.is_authenticated():
         user = request.user
-        fb_profile = FacebookProfile.objects.get(user=user)
+        facebook_profile = FacebookProfile.objects.get(user=user)
+        # twitter_profile = TwitterProfile.objects.get(user=user)
         friendList = fb_profile.get_friends_profiles()
     else:
         return HttpResponseRedirect("/eats")

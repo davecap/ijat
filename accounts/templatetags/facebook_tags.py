@@ -49,7 +49,7 @@ def show_facebook_name(context, user):
     if isinstance(user, FacebookProfile):
         p = user
     else:
-        p = user.facebook_profile
+        p = user.get_profile().facebook
     if getattr(settings, 'WIDGET_MODE', None):
         #if we're rendering widgets, link direct to facebook
         return {'string':u'<fb:name uid="%s" />' % (p.facebook_id)}
