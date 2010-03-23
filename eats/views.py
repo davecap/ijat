@@ -22,16 +22,24 @@ def show(request, eat_id, template='eats/show.html'):
 @login_required
 def new(request, template='eats/new.html'):
     if (request.POST):
-        form = ShorthandEatForm(request.POST) # A form bound to the POST data
-        if form.is_valid():
-            new_eat = Eat(user=request.user, shorthand=form.cleaned_data['shorthand'])
+        shorthand_form = ShorthandEatForm(request.POST) # A form bound to the POST data
+        if shorthand_form.is_valid():
+            new_eat = Eat(user=request.user, shorthand=shorthand_form.cleaned_data['shorthand'])
             valid = new_eat.process_shorthand()
             if valid:
                 new_eat.save()
                 return HttpResponseRedirect(reverse('ijat.eats.views.index'))
+        
+        # long_form = LongEatForm(request.POST) # A form bound to the POST data
+        #         if long_form.is_valid():
+        #             new_eat = Eat(user=request.user, shorthand=form.cleaned_data['shorthand'])
+        #             valid = new_eat.process_shorthand()
+        #             if valid:
+        #                 new_eat.save()
+        #                 return HttpResponseRedirect(reverse('ijat.eats.views.index'))
     else:
-        form = ShorthandEatForm() # An unbound form
+        shorthand_form = ShorthandEatForm() # An unbound form
     
     return render_to_response(
-        template, {'form': form}, context_instance=RequestContext(request)
+        template, {'shorthand_form': shorthand_form}, context_instance=RequestContext(request)
     )

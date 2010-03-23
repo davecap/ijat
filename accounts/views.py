@@ -28,12 +28,12 @@ def profile(request, template='accounts/profile.html'):
         user = request.user
         facebook_profile = FacebookProfile.objects.get(user=user)
         # twitter_profile = TwitterProfile.objects.get(user=user)
-        friendList = fb_profile.get_friends_profiles()
+        friendList = facebook_profile.get_friends_profiles()
     else:
         return HttpResponseRedirect("/eats")
     
     return render_to_response(
-        template, {'user': user, 'facebook_user': fb_profile, 'USER_LOGGED_IN': request.user.is_authenticated(), 'friendList': friendList }, context_instance=RequestContext(request)
+        template, {'user': user, 'facebook_user': facebook_profile, 'USER_LOGGED_IN': request.user.is_authenticated(), 'friendList': friendList }, context_instance=RequestContext(request)
     )
 
 #
