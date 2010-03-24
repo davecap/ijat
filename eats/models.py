@@ -17,6 +17,25 @@ class Eat(models.Model):
     deleted = models.BooleanField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def find_latest(self, num=20):
+        latest_eats = Eat.objects.all().order_by('-created_at')[:num]
+        return latest_eats
+
+    def find_by_user_id(self, user_id, num=10):
+        return Eat.objects.filter(user_id=user_id).order_by('-created_at')[:num]
+
+    def find_by_location(self, location):
+        return None
+
+    def find_by_lat_long(self, lat, long):
+        return None
+
+    def find_by_name(self, name):
+        return None
+
+    def find_by_category(self, category):
+        return None
     
     def __unicode__(self):
         return self.shorthand
@@ -37,3 +56,4 @@ class Eat(models.Model):
         
 class ShorthandEatForm(forms.Form):
     shorthand = forms.CharField(max_length=300)
+

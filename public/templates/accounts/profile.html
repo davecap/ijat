@@ -3,9 +3,12 @@
 {% load facebook_tags %}
 {% block 'content' %}
 
-<div>
-        {% show_facebook_name user %}
-        {% show_facebook_photo user %} 
-</div> 
+Welcome, {% show_facebook_name user %} <br />
+<br />
+{% show_facebook_photo user %} 
+
+City:
+
+Link with Twitter:
 
 {% endblock %}
