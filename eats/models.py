@@ -3,17 +3,22 @@ from django import forms
 from django.contrib.auth.models import User
 
 from ijat.lib.shorthand import parse_shorthand
+from ijat.location.models import Place
 
 class Eat(models.Model):
     """ Details of a Eat """
     
     user = models.ForeignKey(User, related_name="eats")
-    shorthand = models.CharField(max_length=300)
+    place = models.ForeignKey(Place, related_name="eats")
+    place_name = models.CharField(max_length=32)
+    
     cost = models.IntegerField(default=0)
     rating = models.IntegerField(default=0)
-    food = models.CharField(max_length=100, blank=True)
-    location = models.CharField(max_length=100, blank=True)
+    food = models.CharField(max_length=100)
     comment = models.CharField(max_length=100, blank=True, null=True)
+    
+    shorthand = models.CharField(max_length=300, null=True, blank=True)
+    
     deleted = models.BooleanField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -47,7 +52,7 @@ class Eat(models.Model):
         self.cost = parsed['cost']
         self.rating = parsed['rating']
         self.food = parsed['food']
-        self.location = parsed['location']
+        self.place_name = parsed['location']
         self.comment = parsed['comment']
         return True
     

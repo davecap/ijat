@@ -21,6 +21,8 @@ from urllib2 import URLError
 import logging
 log = logging.getLogger('ijat.accounts.models')
 
+from ijat.location.models import City
+
 try:
     from threading import local
 except ImportError:
@@ -293,14 +295,11 @@ class OpenIDNonce(models.Model):
     salt = models.CharField(max_length=255)
     date_created = models.DateTimeField(auto_now_add=True)
 
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="user_profile")
     facebook = models.OneToOneField(FacebookProfile, related_name="user_profile", null=True)
     twitter = models.OneToOneField(TwitterProfile, related_name="user_profile", null=True)
-    location_name = models.CharField(max_length=100, null=True)
-    latitude = models.FloatField(null=True)
-    longitude = models.FloatField(null=True)
+    city = models.ForeignKey(City, null=True)
 
 # def unregister_fb_profile(sender, **kwargs):
 #     """call facebook and let them know to unregister the user"""
